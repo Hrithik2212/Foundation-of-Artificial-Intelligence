@@ -1,12 +1,15 @@
+
 player, opponent = 'x', 'o' 
   
 def isMovesLeft(board) : 
   
     for i in range(3) :
         for j in range(3) :
+            print(board[i][j])
             if (board[i][j] == '_') :
                 return True 
     return False
+
 def evaluate(b) : 
     
     # Checking for Rows  
@@ -50,7 +53,7 @@ def minimax(board , depth , isMax):
         return score 
     elif (score==-1):
         return score 
-    if (isMoveLeft(board==False)):
+    if (isMovesLeft(board==False)):
         return 0
         
     if(isMax):
@@ -73,4 +76,52 @@ def minimax(board , depth , isMax):
                 if(board[i][j]=='_'):
                     board[i][j] = player 
                     hf += evaluate(board)
-                    best = max(best , minimax(bp))
+                    board[i][j] = opponent
+                    hf += evaluate(board)
+                    best = max(best , minimax(board , depth +1 , not isMax )[0])
+        return (best , hf)
+        
+def findbestMove(board):
+    bestVal = -1000 
+    bestMove = (-1, -1)
+    
+    for i in range(3):
+        for j in range(3) :
+            if (board[i][j] == '_'):
+                board[i][j] = player 
+                moveVal , hf  = minimax(board , 0 , False)
+                board[i][j] = '_'
+                if (moveval > bestVal) :
+                    bestMove = (i,j)
+                    bestVal = moveVal
+    print("The best move is :",bestVal)
+    print()
+    return bestMove , hf 
+    
+
+board = [
+    ['x','o','x'],
+    ['o','o','x'],
+    ['_','_','_']
+    ]
+    
+bestMove , hf= findbestMove(board)
+
+print("The optimal move is:")
+print(f"ROW {bestMove[0]} , COLUMN {bestMove[1]}")
+print("The Score of the heursitic function is ",hf )
+                
+                
+                
+                
+                
+                
+                
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
