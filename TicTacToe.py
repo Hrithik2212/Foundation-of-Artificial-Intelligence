@@ -1,14 +1,12 @@
 
 player, opponent = 'x', 'o' 
   
-def isMovesLeft(board) : 
-  
-    for i in range(3) :
-        for j in range(3) :
-            print(board[i][j])
-            if (board[i][j] == '_') :
-                return True 
-    return False
+def isMovesLeft(board):
+    for i in range(3):
+        for j in range(3):
+            if (board[i][j] =='_'):
+                return True
+    return False 
 
 def evaluate(b) : 
     
@@ -50,11 +48,11 @@ def minimax(board , depth , isMax):
     hf = 0 
     score = evaluate(board)
     if (score==1):
-        return score 
+        return (score , 1)
     elif (score==-1):
-        return score 
-    if (isMovesLeft(board==False)):
-        return 0
+        return (score , -1) 
+    if (isMovesLeft(board)==False):
+        return (0 ,0)
         
     if(isMax):
         best = -1000
@@ -65,7 +63,7 @@ def minimax(board , depth , isMax):
                     hf += evaluate(board)
                     board[i][j] = player 
                     hf += evaluate(board)
-                    best = max(best , minimax(board , depth+1 , not isMax)[0])
+                    best = max(best , minimax(board , depth+1 , not isMax)[0] )
                     board[i][j] ='_'
         return (best , hf)
         
@@ -78,7 +76,8 @@ def minimax(board , depth , isMax):
                     hf += evaluate(board)
                     board[i][j] = opponent
                     hf += evaluate(board)
-                    best = max(best , minimax(board , depth +1 , not isMax )[0])
+                    best = min(best , minimax(board , depth +1 , not isMax )[0])
+                    board[i][j] = '_'
         return (best , hf)
         
 def findbestMove(board):
@@ -91,10 +90,10 @@ def findbestMove(board):
                 board[i][j] = player 
                 moveVal , hf  = minimax(board , 0 , False)
                 board[i][j] = '_'
-                if (moveval > bestVal) :
+                if (moveVal > bestVal) :
                     bestMove = (i,j)
                     bestVal = moveVal
-    print("The best move is :",bestVal)
+    print("The value of best move is :",bestVal)
     print()
     return bestMove , hf 
     
@@ -110,18 +109,15 @@ bestMove , hf= findbestMove(board)
 print("The optimal move is:")
 print(f"ROW {bestMove[0]} , COLUMN {bestMove[1]}")
 print("The Score of the heursitic function is ",hf )
-                
-                
-                
-                
-                
-                
-                
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+"""
+OUTPUT
+
+The best move is : 1
+
+The optimal move is:
+ROW 2 , COLUMN 2
+The Score of the heursitic function is  1
+"""
